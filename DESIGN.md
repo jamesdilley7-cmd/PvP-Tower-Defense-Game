@@ -116,13 +116,16 @@ Client B ─┘         one instance per live match           └─ PostgreSQL 
 
 | Layer | Choice | Why |
 |---|---|---|
-| Client engine | Unity (C#) | One codebase for iOS + Android, mature 2D tooling, easiest path to IAP/push/store SDKs |
-| Match server | Go | Deterministic tick simulation, good concurrency for many simultaneous matches, fast to hire for |
-| API services | Go or Node.js (TypeScript) | Matchmaking, accounts, shop, leaderboard — stateless, horizontally scaled |
+| Client engine | Unity (C#), full app including menus | One codebase for iOS + Android, mature 2D tooling, easiest path to IAP/push/store SDKs; keeping menus in Unity too avoids bridging a separate UI stack into the game view |
+| Match server | Node.js/TypeScript, [Colyseus](https://colyseus.io/) | Authoritative rooms, tick-based state sync, and WebSocket transport out of the box — maps directly onto §6's server-authoritative design. Match simulation here is many lightweight state machines (dozens of entities, 20–30Hz), well within what Node's event loop handles; no need to pay the cost of a new language up front |
+| API services | Node.js/TypeScript (Express or Fastify) | Matchmaking, accounts, shop, leaderboard — stateless, horizontally scaled; same language as the match server, one backend codebase |
 | Primary database | PostgreSQL | Accounts, decks, card definitions, match history, purchases |
 | Cache / real-time state | Redis | Matchmaking queues, session presence, leaderboard sorted sets |
 | Orchestration | Kubernetes + Agones (or a managed multiplayer host) | Spin match-server instances up/down with concurrent-match demand, across regions |
 | Auth | Sign in with Apple / Google Play Games + JWT | Required by both stores; server issues short-lived access + refresh tokens |
+| Offline tooling | Python | Balance/telemetry analysis scripts, data pipelines — outside the request path, so language choice doesn't affect match latency |
+
+Go remains an option to revisit later purely for performance: if production telemetry ever shows the Node match server struggling under concurrent-match load, that's the point to profile and consider a Go rewrite of just that service — not a day-one requirement.
 
 ## 8. Fair play & anti-cheat
 
