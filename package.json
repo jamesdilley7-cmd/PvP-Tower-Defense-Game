@@ -1,0 +1,22 @@
+{
+  "name": "tower-clash-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Phase 0 prototype: server-authoritative battle simulation + browser debug client",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/server/index.js",
+    "dev": "tsc --watch",
+    "test": "npm run build && node --test \"dist/test/*.test.js\"",
+    "headless": "npm run build && node dist/test/headless-match.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/ws": "^8.5.13",
+    "typescript": "^5.7.2"
+  }
+}

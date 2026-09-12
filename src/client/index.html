@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Tower Clash — Prototype</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div id="lobby" class="screen">
+      <h1>Tower Clash</h1>
+      <p class="tagline">Phase 0 prototype — server-authoritative battle loop</p>
+      <label for="name">Name</label>
+      <input id="name" type="text" value="Player" maxlength="24" autocomplete="off" />
+      <button id="play-bot" class="primary">Play vs Bot</button>
+      <button id="play-human">Find Match</button>
+      <p id="lobby-status" class="status"></p>
+    </div>
+
+    <div id="battle" class="screen" hidden>
+      <header id="hud">
+        <div class="crowns">
+          <span class="label">You</span>
+          <strong id="crowns-you">0</strong>
+        </div>
+        <div class="clock">
+          <strong id="timer">0:00</strong>
+          <span id="phase" class="phase"></span>
+        </div>
+        <div class="crowns right">
+          <strong id="crowns-them">0</strong>
+          <span class="label" id="opponent-name">Opponent</span>
+        </div>
+      </header>
+
+      <canvas id="arena"></canvas>
+
+      <footer id="controls">
+        <div id="elixir-bar" class="elixir">
+          <div id="elixir-fill" class="elixir-fill"></div>
+          <span id="elixir-value">5</span>
+        </div>
+        <div id="hand" class="hand"></div>
+        <p id="hint" class="hint">Pick a card, then tap your half of the arena.</p>
+      </footer>
+    </div>
+
+    <div id="result" class="overlay" hidden>
+      <h2 id="result-title">Victory</h2>
+      <p id="result-detail"></p>
+      <button id="again" class="primary">Play again</button>
+    </div>
+
+    <script type="module" src="/client.js"></script>
+  </body>
+</html>
